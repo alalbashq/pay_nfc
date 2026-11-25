@@ -1,0 +1,41 @@
+name: Build Ghallah Debug APKs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/build-debug-apks.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK 35
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Test, lint, and build
+        run: gradle :core:testDebugUnitTest :pos:lintDebug :pay:lintDebug :pos:assembleDebug :pay:assembleDebug
+      - name: Verify and name APKs
+        run: |
+          mkdir -p artifacts
+          cp apps/ghallah-pos/android/build/outputs/apk/debug/pos-debug.apk artifacts/Ghallah-POS-debug.apk
+          cp apps/ghallah-pay/android/build/outputs/apk/debug/pay-debug.apk artifacts/Ghallah-Pay-debug.apk
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging artifacts/Ghallah-POS-debug.apk | grep -F "package: name='com.ghallah.pos'"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging artifacts/Ghallah-Pay-debug.apk | grep -F "package: name='com.ghallah.pay'"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Ghallah-Debug-APKs
+          path: artifacts/*.apk
+          if-no-files-found: error
