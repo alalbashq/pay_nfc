@@ -1,13 +1,9 @@
-package com.ghallah.pos
+package com.ghallah.core
 
 import android.app.Activity
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.IsoDep
-import com.ghallah.core.Identity
-import com.ghallah.core.Ledger
-import com.ghallah.core.Protocol
-import com.ghallah.core.Record
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.nio.ByteBuffer

@@ -1,0 +1,40 @@
+:root {
+  font: 16px/1.55 system-ui, sans-serif;
+  color-scheme: light;
+  --bg: #f5f8f6;
+  --card: #fff;
+  --ink: #183c35;
+  --line: #b6ccc1;
+  --accent: #206a58;
+  --danger: #a71d2a;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] {
+    color-scheme: dark;
+    --bg: #101c18; --card: #202e29; --ink: #ecf3f0; --line: #607e72; --danger: #ff9aa3;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101c18; --card: #202e29; --ink: #ecf3f0; --line: #607e72; --danger: #ff9aa3;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); }
+main { max-width: 42rem; margin: auto; padding: 1rem; }
+header, .card { margin-block-end: 1rem; }
+h1, h2 { line-height: 1.2; margin-block: .45em; }
+.badge, .meta { font-size: .85rem; overflow-wrap: anywhere; }
+.card, .notice { background: var(--card); border: 1px solid var(--line); border-radius: 1rem; padding: 1.1rem; }
+.notice.error, button.danger { color: var(--danger); }
+nav, .actions { display: flex; gap: .55rem; }
+.actions > * { flex: 1; min-width: 0; }
+input, textarea, select, button { border: 1px solid var(--line); border-radius: .55rem; background: var(--card); color: inherit; font: inherit; min-height: 44px; padding: .55rem .7rem; }
+label { display: block; margin-block: .65rem; }
+input, textarea, select { display: block; width: 100%; margin-top: .2rem; }
+button { cursor: pointer; }
+button.primary, nav button[aria-current] { background: var(--accent); color: #fff; border-color: var(--accent); }
+button:disabled { opacity: .65; cursor: default; }
+.record { display: block; width: 100%; text-align: start; margin-block: .45rem; }
+.amount { font-size: 2rem; }
+dl { display: grid; grid-template-columns: auto 1fr; gap: .25rem .8rem; }
+dd { margin: 0; }

@@ -1,0 +1,21 @@
+{
+  "name": "ghallah-payment",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:pos": "vite --mode pos",
+    "dev:pay": "vite --mode pay",
+    "build:pos": "vite build --mode pos",
+    "build:pay": "vite build --mode pay",
+    "build": "npm run build:pos && npm run build:pay"
+  },
+  "dependencies": {
+    "@capacitor/android": "6.2.3",
+    "@capacitor/core": "6.2.3",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.0",
+    "vite": "^6.4.0"
+  }
+}
