@@ -20,6 +20,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs=-Xmx1536m -Dorg.gradle.workers.max=2'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -39,7 +41,11 @@ jobs:
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-35' 'build-tools;35.0.0'
       - name: Test, lint, and build
         run: gradle :core:testDebugUnitTest :pos:lintDebug :pay:lintDebug :pos:assembleDebug :pay:assembleDebug
+      - name: Assemble APKs if checks stop the build
+        if: failure()
+        run: gradle :pos:assembleDebug :pay:assembleDebug
       - name: Verify and name APKs
+        if: "!cancelled()"
         run: |
           mkdir -p artifacts
           cp apps/ghallah-pos/android/build/outputs/apk/debug/pos-debug.apk artifacts/Ghallah-POS-debug.apk
@@ -47,6 +53,7 @@ jobs:
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging artifacts/Ghallah-POS-debug.apk | grep -F "package: name='com.ghallah.pos'"
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging artifacts/Ghallah-Pay-debug.apk | grep -F "package: name='com.ghallah.pay'"
       - uses: actions/upload-artifact@v4
+        if: "!cancelled()"
         with:
           name: Ghallah-Debug-APKs
           path: artifacts/*.apk
